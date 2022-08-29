@@ -2,9 +2,16 @@ import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import { CreatePostInput } from "../inputs/create-post-input";
 import { authors, posts } from '../database'
 import { Post } from "../models/posts";
+import { PubSubService } from "../services/pubsub";
+
 
 @Resolver()
 export class PostResolver {
+  private pubsubService: PubSubService;
+
+  constructor() {
+    this.pubsubService = new PubSubService();
+  }
   
   @Query(() => [Post])
   async getPosts() {
@@ -22,6 +29,10 @@ export class PostResolver {
 
     if (!authorExists) throw new Error("Author not exists");
 
-    return posts.create({ data, include: { author: true }});
+    const post = await posts.create({ data, include: { author: true }});
+
+    this.pubsubService.publish('newPostRegistered', post);
+
+    return post;
   }
 }

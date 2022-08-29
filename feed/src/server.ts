@@ -3,8 +3,11 @@ import path from "path";
 import { ApolloServer } from "apollo-server";
 import { buildSchema } from "type-graphql";
 import { FeedResolver } from "./resolvers/feed.resolvers";
+import { PubSubEvents } from "./events";
 
-const port = process.env.PORT || 3000;
+const pubsubEvents = new PubSubEvents();
+
+const port = process.env.PORT || 3003;
 
 const main = async () => {
   const schema = await buildSchema({
@@ -16,6 +19,8 @@ const main = async () => {
     schema,
   });
 
+  pubsubEvents.listen();
+  
   const { url } = await server.listen(port);
 
   console.log(`server running on ${url}`);

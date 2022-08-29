@@ -4,7 +4,7 @@ import { ApolloServer } from "apollo-server";
 import { buildSchema } from "type-graphql";
 import { UserResolver } from "./resolvers/user.resolvers";
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 const main = async () => {
   const schema = await buildSchema({

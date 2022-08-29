@@ -1,5 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
 export const { 
-  feed
+  feed,
+  users,
+  posts
 } = new PrismaClient();

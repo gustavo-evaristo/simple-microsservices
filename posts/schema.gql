@@ -3,17 +3,30 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type Author {
+  created_at: DateTime!
+  id: ID!
+  name: String!
+  updated_at: DateTime!
+  username: String!
+}
+
 input CreatePostInput {
   author_id: String!
   name: String!
 }
+
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
 
 type Mutation {
   createPost(data: CreatePostInput!): Post!
 }
 
 type Post {
-  author: User!
+  author: Author!
   author_id: String!
   id: ID!
   name: String!
@@ -21,10 +34,4 @@ type Post {
 
 type Query {
   getPosts: [Post!]!
-}
-
-type User {
-  id: ID!
-  name: String!
-  username: String!
 }

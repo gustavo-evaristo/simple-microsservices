@@ -1,5 +1,5 @@
 import { ObjectType, Field, ID } from 'type-graphql'
-import { User } from './user';
+import { Author } from './author';
 
 @ObjectType()
 export class Post {
@@ -13,5 +13,5 @@ export class Post {
   author_id: string;
 
   @Field()
-  author: User;
+  author: Author;
 }
