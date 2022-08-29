@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id         String   @id @default(uuid())
+  name       String
+  username   String   @unique
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  posts      posts[]
+  feed       feed[]
+}
+
+model posts {
+  id         String   @id @default(uuid())
+  name       String
+  user_id    String
+  users      users    @relation(fields: [user_id], references: [id]) 
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  feed feed[]
+
+  @@index([user_id], map: "posts_user_id_fkey")
+}
+
+model feed {
+  id         String   @id @default(uuid())
+  user_id    String?
+  users      users?    @relation(fields: [user_id], references: [id])
+  post_id    String?
+  posts      posts?    @relation(fields: [post_id], references: [id])
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  @@index([user_id], map: "feed_user_id_fkey")
+  @@index([post_id], map: "feed_post_id_fkey")
+}
